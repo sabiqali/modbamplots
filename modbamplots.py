@@ -15,10 +15,22 @@ parser.add_argument('--end', help='the end coordinates', required=False)
 args = parser.parse_args()
 
 with ModBam(args.bam) as bam:
+    bam_meth = {} #{pos : [min,avg,max,read_support]}
     for read in bam.reads(args.chr, int(args.start), int(args.end)):
         for pos_mod in read.mod_sites:
-            #print("test")
             print(*pos_mod)
+            pos_count = pos_mod.rpos
+            inst_meth = pos_mod.qual
+            if pos_count in bam_meth:
+                #update that by averaging and checking min max
+                pos_vals = bam_meth[pos_count]
+                new_min = inst_meth if inst_meth < pos_vals[0] else pos_vals[0]
+                new_max = inst_meth if inst_meth > pos_vals[2] else pos_vals[2]
+                new_avg = ((pos_vals[1] * pos_vals[3]) + inst_meth)/(pos_vals[3] + 1)
+                new_read_support = pos_vals[3] + 1
+                bam_meth.update({pos_count : [new_min, new_avg, new_max, new_read_support]})
+            else:
+                bam_meth[pos_count] = [inst_meth, inst_meth, inst_meth, 1]
         break
 
 time = np.arange(int(args.end) - int(args.start))
