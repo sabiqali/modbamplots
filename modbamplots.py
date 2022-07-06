@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-#from modbampy import ModBam
+from modbampy import ModBam
 import argparse
 import os
 import matplotlib.pyplot as plt
@@ -14,10 +14,12 @@ parser.add_argument('--end', help='the end coordinates', required=False)
 
 args = parser.parse_args()
 
-#with ModBam(args.bam) as bam:
-#    for read in bam.reads(args.chrom, args.start, args.end):
-#        for pos_mod in read.mod_sites:
-#            print(*pos_mod)
+with ModBam(args.bam) as bam:
+    for read in bam.reads(args.chr, int(args.start), int(args.end)):
+        for pos_mod in read.mod_sites:
+            #print("test")
+            print(*pos_mod)
+        break
 
 time = np.arange(int(args.end) - int(args.start))
 #time2 = np.array([1000, 1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1010, 1011])
