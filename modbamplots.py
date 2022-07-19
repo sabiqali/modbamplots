@@ -21,17 +21,22 @@ with ModBam(args.bam) as bam:
             print(*pos_mod)
             pos_count = pos_mod.rpos
             inst_meth = pos_mod.qual
-            if pos_count in bam_meth:
-                #update that by averaging and checking min max
-                pos_vals = bam_meth[pos_count]
-                new_min = inst_meth if inst_meth < pos_vals[0] else pos_vals[0]
-                new_max = inst_meth if inst_meth > pos_vals[2] else pos_vals[2]
-                new_avg = ((pos_vals[1] * pos_vals[3]) + inst_meth)/(pos_vals[3] + 1)
-                new_read_support = pos_vals[3] + 1
-                bam_meth.update({pos_count : [new_min, new_avg, new_max, new_read_support]})
-            else:
-                bam_meth[pos_count] = [inst_meth, inst_meth, inst_meth, 1]
+            print(pos_count)
+            print(inst_meth)
+            if pos_count > 0:
+                if pos_count in bam_meth:
+                    #update that by averaging and checking min max
+                    pos_vals = bam_meth[pos_count]
+                    new_min = inst_meth if inst_meth < pos_vals[0] else pos_vals[0]
+                    new_max = inst_meth if inst_meth > pos_vals[2] else pos_vals[2]
+                    new_avg = ((pos_vals[1] * pos_vals[3]) + inst_meth)/(pos_vals[3] + 1)
+                    new_read_support = pos_vals[3] + 1
+                    bam_meth.update({pos_count : [new_min, new_avg, new_max, new_read_support]})
+                else:
+                    bam_meth[pos_count] = [inst_meth, inst_meth, inst_meth, 1]
         break
+
+print(bam_meth)
 
 time = np.arange(int(args.end) - int(args.start))
 #time2 = np.array([1000, 1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1010, 1011])
