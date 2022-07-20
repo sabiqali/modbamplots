@@ -5,6 +5,7 @@ import argparse
 import os
 import matplotlib.pyplot as plt
 import numpy as np
+import matplotlib.patches as mpatches
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--bam', help='the modified bam file that has been generated', required=False)
@@ -62,25 +63,37 @@ for key in bam_meth_keys:
 #avg = np.random.rand(int(args.end) - int(args.start))
 
 # Initialize figure and axis
-fig, ax = plt.subplots(figsize=(8, 8))
+fig, (ax1,ax2) = plt.subplots(2,1,sharex=True,figsize=(8, 8))
 
 # Plot lines
-ax.plot(time, minimum, color="red")
-ax.plot(time, maximum, color="red")
-ax.plot(time, average, color="black")
+ax1.plot(time, minimum, color="red")
+ax1.plot(time, maximum, color="red")
+ax1.plot(time, average, color="black")
+ax1.fill_between(time, minimum, maximum, color='red',alpha=0.3,label="Variance in Methylation")
 
+#ax1.ylabel("methylation")
 
-plt.fill_between(time, minimum, maximum, color='red',alpha=0.3)
+ax2.plot(time, support, color="green")
+
+#ax2.ylabel("read support")
+
+ax1.set_title('Methylation')
+ax2.set_title('Read Support')
+
+#plt.fill_between(time, minimum, maximum, color='red',alpha=0.3,label="Variance in Methylation")
 # Fill area when income > expenses with green
 #ax.fill_between(
 #    time, minimum, maximum, where=(maximum > minimum), 
 #    interpolate=True, color="red", alpha=0.25, 
 #    label="Variance in Methylation"
 #)
+# Creating legend with color box
+red_patch = mpatches.Patch(color='red', label='Min & Max Methylation')
+black_patch = mpatches.Patch(color='black', label='Average Methylation')
+green_patch = mpatches.Patch(color='green', label='Read Support')
+plt.legend(handles=[red_patch, black_patch, green_patch])
+
 
 plt.xlabel("Region")
-plt.ylabel("Methylation")
-
-ax.legend()
 
 fig.savefig("test.png")
