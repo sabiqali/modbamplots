@@ -20,7 +20,7 @@ with ModBam(args.bam) as bam:
         for pos_mod in read.mod_sites:
             #print(*pos_mod)
             pos_count = pos_mod.rpos
-            inst_meth = pos_mod.qual
+            inst_meth = (pos_mod.qual)/255
             #print(pos_count)
             #print(inst_meth)
             if pos_count > 0:
@@ -44,6 +44,7 @@ time = list()
 minimum = list()
 maximum = list()
 average = list()
+support = list()
 for key in bam_meth_keys:
     #print(key)
     #print(bam_meth[key][1])
@@ -52,6 +53,7 @@ for key in bam_meth_keys:
         minimum.append(bam_meth[key][0])
         average.append(bam_meth[key][1])
         maximum.append(bam_meth[key][2])
+        support.append(bam_meth[key][3])
 #time = np.arange(int(args.end) - int(args.start))
 #time2 = np.array([1000, 1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1010, 1011])
 #min = np.array([1, 3, 1, 4, 5, 2, 4, 3, 2, 5, 1, 5])
