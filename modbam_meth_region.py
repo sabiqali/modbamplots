@@ -55,7 +55,7 @@ for line in region_fh:
             meth_prob = bam_meth[position][1]
             read_support = bam_meth[position][3]
         
-        print("\t".join([chromosome,gene_name,str(position),region_of_mod,rel_region_of_mod,rel_region_of_mod_scaled,meth_prob,read_support]))
+        print("\t".join([chromosome,gene_name,str(position),region_of_mod,str(rel_region_of_mod),str(rel_region_of_mod_scaled),str(meth_prob),str(read_support)]))
 
     break
 
