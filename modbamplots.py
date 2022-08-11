@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib.patches as mpatches
 
-parser = argparse.ArgumentParser()
+parser = argparse.ArgumentParser(description='Find out the methylation stats of a region from BAM files with Modified Base tags, and plot graphs for the methylation in the region')
 parser.add_argument('--bam', help='the modified bam file that has been generated', required=False)
 parser.add_argument('--chr', help='the chromosome', required=False)
 parser.add_argument('--start', help='the start coordinates', required=False)
